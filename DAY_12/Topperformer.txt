@@ -1,0 +1,21 @@
+
+MariaDB [task]> SELECT s.student_id, s.name, total_marks
+    -> FROM student s
+    -> JOIN (
+    ->     SELECT student_id, SUM(mark) AS total_marks
+    ->     FROM marks
+    ->     GROUP BY student_id
+    -> ) m ON s.student_id = m.student_id
+    -> WHERE total_marks = (
+    ->     SELECT MAX(total_marks)
+    ->     FROM (
+    ->         SELECT student_id, SUM(mark) AS total_marks
+    ->         FROM marks
+    ->         GROUP BY student_id
+    ->     ) sub
+    -> );
++------------+-------+-------------+
+| student_id | name  | total_marks |
++------------+-------+-------------+
+|          1 | Baloo |         175 |
++------------+-------+-------------+

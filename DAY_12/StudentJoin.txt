@@ -1,0 +1,69 @@
+
+MariaDB [task]> drop table student;
+Query OK, 0 rows affected (0.143 sec)
+
+MariaDB [task]> CREATE TABLE student (
+    ->     student_id INT PRIMARY KEY,
+    ->     name VARCHAR(50)
+    -> );
+Query OK, 0 rows affected (0.082 sec)
+
+MariaDB [task]> INSERT INTO student (student_id, name) VALUES
+    -> (1, 'Baloo'),
+    -> (2, 'Bahgera'),
+    -> (3, 'Mowgli'),
+    -> (4, 'Sher_Khan'),
+    -> (5, 'Kaa');
+Query OK, 5 rows affected (0.007 sec)
+Records: 5  Duplicates: 0  Warnings: 0
+
+MariaDB [task]> MariaDB [task]> INSERT INTO marks (student_id, subject, mark) VALUES
+    -> (1, 'Math', 85),
+    -> (1, 'Science', 90),
+    -> (2, 'Math', 75),
+    -> (3, 'Science', 88),
+    -> (4, 'Math', 92),
+    -> (5, 'Science', 70);
+Query OK, 6 rows affected (0.008 sec)
+Records: 6  Duplicates: 0  Warnings: 0
+
+MariaDB [task]> select * from student;
++------------+-----------+
+| student_id | name      |
++------------+-----------+
+|          1 | Baloo     |
+|          2 | Bahgera   |
+|          3 | Mowgli    |
+|          4 | Sher_Khan |
+|          5 | Kaa       |
++------------+-----------+
+5 rows in set (0.001 sec)
+
+
+
+MariaDB [task]> INSERT INTO marks (student_id, subject, mark) VALUES
+    -> (1, 'Math', 85),
+    -> (1, 'Science', 90),
+    -> (2, 'Math', 75),
+    -> (3, 'Science', 88),
+    -> (4, 'Math', 92),
+    -> (5, 'Science', 70);
+Query OK, 6 rows affected (0.074 sec)
+Records: 6  Duplicates: 0  Warnings: 0
+
+MariaDB [task]> SELECT student.student_id, student.name, marks.subject, marks.mark
+    -> FROM student
+    -> JOIN marks ON student.student_id = marks.student_id
+    -> WHERE student.name IN ('Baloo', 'Bahgera', 'Mowgli', 'Sher_Khan');
++------------+-----------+---------+------+
+| student_id | name      | subject | mark |
++------------+-----------+---------+------+
+|          1 | Baloo     | Math    |   85 |
+|          1 | Baloo     | Science |   90 |
+|          2 | Bahgera   | Math    |   75 |
+|          3 | Mowgli    | Science |   88 |
+|          4 | Sher_Khan | Math    |   92 |
++------------+-----------+---------+------+
+5 rows in set (0.002 sec)
+
+MariaDB [task]>

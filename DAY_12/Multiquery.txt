@@ -1,0 +1,103 @@
+MariaDB [task]> create table kids (
+    ->     kid_id int primary key,
+    ->     name varchar(50)
+    -> );
+Query OK, 0 rows affected (0.082 sec)
+
+MariaDB [task]> insert into kids (kid_id, name) values
+    -> (1, 'meer'),
+    -> (2, 'neil'),
+    -> (3, 'avyuktha'),
+    -> (4, 'shesha'),
+    -> (5, 'sathi');
+Query OK, 5 rows affected (0.067 sec)
+Records: 5  Duplicates: 0  Warnings: 0
+
+MariaDB [task]> select * from kids;
++--------+----------+
+| kid_id | name     |
++--------+----------+
+|      1 | meer     |
+|      2 | neil     |
+|      3 | avyuktha |
+|      4 | shesha   |
+|      5 | sathi    |
++--------+----------+
+5 rows in set (0.001 sec)
+
+MariaDB [task]> create table toys (
+    ->     toy_id int primary key,
+    ->     toy_name varchar(100),
+    ->     price decimal(5,2)
+    -> );
+Query OK, 0 rows affected (0.080 sec)
+
+MariaDB [task]>
+MariaDB [task]> insert into toys (toy_id, toy_name, price) values
+    -> (1, 'remote car', 250.00),
+    -> (2, 'lego blocks', 300.00),
+    -> (3, 'teddy bear', 150.00),
+    -> (4, 'robot', 500.00),
+    -> (5, 'puzzle', 120.00);
+Query OK, 5 rows affected (0.061 sec)
+Records: 5  Duplicates: 0  Warnings: 0
+
+MariaDB [task]> select * from toys;
++--------+-------------+--------+
+| toy_id | toy_name    | price  |
++--------+-------------+--------+
+|      1 | remote car  | 250.00 |
+|      2 | lego blocks | 300.00 |
+|      3 | teddy bear  | 150.00 |
+|      4 | robot       | 500.00 |
+|      5 | puzzle      | 120.00 |
++--------+-------------+--------+
+5 rows in set (0.001 sec)
+
+MariaDB [task]> create table amount (
+    ->     kid_id int,
+    ->     toy_id int,
+    ->     foreign key (kid_id) references kids(kid_id),
+    ->     foreign key (toy_id) references toys(toy_id)
+    -> );
+Query OK, 0 rows affected (0.068 sec)
+
+MariaDB [task]> insert into amount (kid_id, toy_id) values
+    -> (1, 1),     
+      ->(2, 2),
+    -> (3, 3), 
+    -> (4, 4), 
+    -> (5, 5); 
+Query OK, 5 rows affected (0.062 sec)
+Records: 5  Duplicates: 0  Warnings: 0
+
+MariaDB [task]> select * from amount;
++--------+--------+
+| kid_id | toy_id |
++--------+--------+
+|      1 |      1 |
+|      2 |      2 |
+|      3 |      3 |
+|      4 |      4 |
+|      5 |      5 |
++--------+--------+
+5 rows in set (0.001 sec)
+
+MariaDB [task]> select k.kid_id, k.name, t.toy_name, t.price
+    -> from kids k
+    -> join amount a on k.kid_id = a.kid_id
+    -> join toys t on a.toy_id = t.toy_id
+    -> where k.name in ('meer', 'neil', 'avyuktha', 'shesha', 'sathi')
+    ->   and t.toy_name in ('remote car', 'lego blocks', 'teddy bear', 'robot', 'puzzle')
+    ->   and t.price >= 150.00;
++--------+----------+-------------+--------+
+| kid_id | name     | toy_name    | price  |
++--------+----------+-------------+--------+
+|      1 | meer     | remote car  | 250.00 |
+|      2 | neil     | lego blocks | 300.00 |
+|      3 | avyuktha | teddy bear  | 150.00 |
+|      4 | shesha   | robot       | 500.00 |
++--------+----------+-------------+--------+
+4 rows in set (0.001 sec)
+
+MariaDB [task]>
